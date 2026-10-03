@@ -1,3 +1,4 @@
+import { externalLinkProps } from "@ieee/ui/lib/external-link";
 import Link from "next/link";
 import { footerLinks } from "@ieee/ui/content/footer-links";
 import { copyrightLine } from "@ieee/ui/layout/app-footer";
@@ -6,7 +7,7 @@ import { SITE_LINKS } from "@/lib/content";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-auto px-4 pt-16 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-8 md:pt-24">
+    <footer className="mt-auto px-site-4 pt-16 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-site-8 md:pt-24">
       <nav className="grid grid-cols-2 gap-x-6 gap-y-10 text-xs font-semibold uppercase md:grid-cols-12">
         {footerLinks({ title: "Recruitments", links: SITE_LINKS }).map(
           (group, index) => (
@@ -23,7 +24,11 @@ export function SiteFooter() {
                         {link.label}
                       </Link>
                     ) : (
-                      <a href={link.href} className="hover:opacity-60">
+                      <a
+                        href={link.href}
+                        {...externalLinkProps(link.href)}
+                        className="hover:opacity-60"
+                      >
                         {link.label}
                       </a>
                     )}
@@ -35,7 +40,7 @@ export function SiteFooter() {
         )}
       </nav>
       <div aria-hidden="true" className="@container mt-16 md:mt-24">
-        <Wordmark className="block text-[length:calc(100cqw/4.44)]" />
+        <Wordmark className="-ml-[0.04em] block text-[length:calc(100cqw/4.4)]" />
       </div>
       <p className="mt-6 border-t pt-5 text-xs font-semibold uppercase">
         {copyrightLine()}

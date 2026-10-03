@@ -44,7 +44,7 @@ export function HeroArt({ active }: { active: number }) {
       aria-hidden="true"
       viewBox="0 0 1000 600"
       preserveAspectRatio="xMaxYMin meet"
-      className="text-primary-faint pointer-events-none absolute top-16 -right-[12.5%] -z-10 h-[62%] w-[125%] md:top-12 md:right-8 md:w-[72%]"
+      className="text-primary-faint pointer-events-none absolute top-16 -right-[12.5%] -z-10 h-[62%] w-[125%] md:top-12 md:right-[max(2rem,calc((100%-var(--container-site))/2+2rem))] md:w-[calc(min(100%,var(--container-site))*0.72)]"
       animate={{ y: [0, -14, 0] }}
       transition={{ duration: ART.drift, ease: "easeInOut", repeat: Infinity }}
     >

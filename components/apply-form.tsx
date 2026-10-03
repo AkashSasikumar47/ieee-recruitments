@@ -169,7 +169,7 @@ export function ApplyForm({ preselect }: { preselect?: string }) {
   ];
 
   return (
-    <div className="grid gap-10 px-4 pt-10 pb-20 md:grid-cols-12 md:gap-6 md:px-8 md:pt-16 md:pb-32">
+    <div className="grid gap-10 px-site-4 pt-10 pb-20 md:grid-cols-12 md:gap-6 md:px-site-8 md:pt-16 md:pb-32">
       <aside className="flex flex-col gap-8 md:sticky md:top-28 md:col-span-4 md:self-start">
         <Reveal trigger="mount" y={8}>
           <p className="text-primary-soft text-xs font-semibold tracking-wide uppercase">
@@ -389,7 +389,7 @@ export function ApplyForm({ preselect }: { preselect?: string }) {
                             aria-pressed={picked}
                             disabled={full}
                             onClick={() => toggle(domain.code)}
-                            className="h-auto w-full justify-between gap-3 px-4 py-3 text-left whitespace-normal"
+                            className="h-auto w-full justify-between gap-3 px-site-4 py-3 text-left whitespace-normal"
                           >
                             <span className="flex flex-col">
                               <span className="font-display text-2xl leading-none font-normal">
@@ -526,7 +526,7 @@ function Confirmation({
   domains: string[];
 }) {
   return (
-    <section className="bg-primary px-4 pt-14 pb-20 text-primary-foreground md:px-8 md:pt-20 md:pb-28">
+    <section className="bg-primary px-site-4 pt-14 pb-20 text-primary-foreground md:px-site-8 md:pt-20 md:pb-28">
       <div className="grid gap-12 md:grid-cols-12">
         <div className="flex flex-col gap-8 md:col-span-7">
           <Reveal trigger="mount" y={8}>

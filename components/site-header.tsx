@@ -30,11 +30,16 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
           : "border-b bg-background text-primary"
       }`}
     >
-      <div className="flex items-center justify-between px-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 md:px-8">
+      <div className="flex items-center justify-between px-site-4 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 md:px-site-8">
         <Link href="/" aria-label="Recruitments home">
           <Wordmark className="text-[2rem] md:text-[2.4rem]" />
         </Link>
-        <a href="https://ieeesrmist.com" aria-label="IEEE SRMIST">
+        <a
+          href="https://ieeesrmist.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="IEEE SRMIST"
+        >
           <Image
             src="/logos/ieee-srmist-logo.png"
             alt="IEEE SRMIST"

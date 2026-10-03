@@ -7,7 +7,7 @@ export default function NotFound() {
   return (
     <>
       <SiteHeader />
-      <main className="flex flex-1 flex-col items-start gap-6 px-4 py-24 md:px-8 md:py-32">
+      <main className="flex flex-1 flex-col items-start gap-6 px-site-4 py-24 md:px-site-8 md:py-32">
         <p className="text-primary-soft text-xs font-semibold tracking-wide uppercase">
           ↳ 404
         </p>
