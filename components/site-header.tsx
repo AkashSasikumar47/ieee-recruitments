@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
-import { DURATION, EASE_OUT, HERO } from "@/components/motion/timing";
+import { DURATION, EASE_OUT, HERO, YOU } from "@/components/motion/timing";
 import { Wordmark } from "@/components/wordmark";
 
 export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
@@ -22,7 +22,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
       transition={{
         duration: DURATION.reveal,
         ease: EASE_OUT,
-        delay: HERO.header,
+        delay: overlay ? YOU.header : HERO.header,
       }}
       className={`${overlay ? "fixed" : "sticky"} inset-x-0 top-0 z-40 transition-colors duration-500 ${
         overHero

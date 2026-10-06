@@ -7,7 +7,13 @@ import { AnimatePresence, motion } from "motion/react";
 import { Button } from "@ieee/ui/components/button";
 import { HeroArt } from "@/components/hero-art";
 import { Reveal } from "@/components/motion/reveal";
-import { DURATION, EASE_IN_OUT, HERO } from "@/components/motion/timing";
+import {
+  DURATION,
+  EASE_IN_OUT,
+  EASE_OUT,
+  HERO,
+} from "@/components/motion/timing";
+import { YouAreHere } from "@/components/motion/you-are-here";
 import { TwoTone } from "@/components/two-tone";
 import { DOMAINS, DRIVE } from "@/lib/content";
 
@@ -16,16 +22,23 @@ export function HeroSection() {
   const domain = DOMAINS[index] ?? DOMAINS[0]!;
 
   useEffect(() => {
-    const timer = window.setInterval(
-      () => setIndex((current) => (current + 1) % DOMAINS.length),
-      HERO.cycle * 1000,
-    );
-    return () => window.clearInterval(timer);
+    let timer = 0;
+    const start = window.setTimeout(() => {
+      timer = window.setInterval(
+        () => setIndex((current) => (current + 1) % DOMAINS.length),
+        HERO.cycle * 1000,
+      );
+    }, HERO.details * 1000);
+    return () => {
+      window.clearTimeout(start);
+      window.clearInterval(timer);
+    };
   }, []);
 
   return (
     <section className="relative isolate flex h-svh min-h-[36rem] flex-col justify-end overflow-hidden bg-primary px-gutter pt-24 pb-[max(7rem,calc(env(safe-area-inset-bottom)+5.5rem))] text-primary-foreground md:pb-8">
       <HeroArt active={index} />
+      <YouAreHere />
       <TwoTone
         as="h1"
         tone="blue"
@@ -38,18 +51,29 @@ export function HeroSection() {
         className="font-display relative -mt-[0.03em] -ml-[0.032em] h-[0.86em] overflow-hidden text-[clamp(4.25rem,19.5vw,20rem)] leading-[0.86] uppercase"
         aria-live="polite"
       >
-        <AnimatePresence initial={false} mode="popLayout">
-          <motion.span
-            key={domain.word}
-            className="block whitespace-nowrap"
-            initial={{ y: "100%" }}
-            animate={{ y: "0%" }}
-            exit={{ y: "-100%" }}
-            transition={{ duration: DURATION.roll, ease: EASE_IN_OUT }}
-          >
-            {domain.word}
-          </motion.span>
-        </AnimatePresence>
+        <motion.span
+          className="block"
+          initial={{ y: "100%" }}
+          animate={{ y: "0%" }}
+          transition={{
+            duration: DURATION.roll,
+            ease: EASE_OUT,
+            delay: HERO.title + 0.15,
+          }}
+        >
+          <AnimatePresence initial={false} mode="popLayout">
+            <motion.span
+              key={domain.word}
+              className="block whitespace-nowrap"
+              initial={{ y: "100%" }}
+              animate={{ y: "0%" }}
+              exit={{ y: "-100%" }}
+              transition={{ duration: DURATION.roll, ease: EASE_IN_OUT }}
+            >
+              {domain.word}
+            </motion.span>
+          </AnimatePresence>
+        </motion.span>
       </div>
       <Reveal
         trigger="mount"
@@ -60,7 +84,7 @@ export function HeroSection() {
         <p className="text-xs font-semibold tracking-wide uppercase">
           <span className="text-primary-faint">IEEE SRMIST · Recruitments</span>
           <br />
-          {DRIVE.status} · {DRIVE.opens} – {DRIVE.closes}
+          {DRIVE.status} · {DRIVE.waitlist}
         </p>
         <Button
           size="lg"
@@ -68,8 +92,8 @@ export function HeroSection() {
           className="h-12 px-6 text-sm font-bold tracking-wide uppercase"
           asChild
         >
-          <Link href="/apply">
-            Apply now <ArrowRight />
+          <Link href="/waitlist">
+            Join the waitlist <ArrowRight />
           </Link>
         </Button>
       </Reveal>

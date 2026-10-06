@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { ART, EASE_IN_OUT, EASE_OUT } from "@/components/motion/timing";
+import { ART, EASE_IN_OUT, EASE_OUT, YOU } from "@/components/motion/timing";
 import { DOMAINS } from "@/lib/content";
 
 const NODES = [
@@ -87,11 +87,19 @@ export function HeroArt({ active }: { active: number }) {
         ))}
       </g>
       <motion.g
-        initial={false}
-        animate={{ x: point[0], y: point[1] }}
-        transition={{ duration: ART.hop, ease: EASE_IN_OUT }}
+        initial={{ x: point[0], y: point[1], opacity: 0 }}
+        animate={{ x: point[0], y: point[1], opacity: 1 }}
+        transition={{
+          default: { duration: ART.hop, ease: EASE_IN_OUT },
+          opacity: { duration: 0.2, delay: YOU.done - 0.1 },
+        }}
       >
-        <circle r="5" className="fill-primary-foreground" opacity="0.8" />
+        <circle
+          data-you
+          r="5"
+          className="fill-primary-foreground"
+          opacity="0.8"
+        />
         <motion.circle
           r="5"
           fill="none"

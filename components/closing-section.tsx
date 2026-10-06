@@ -8,7 +8,7 @@ import { Reveal } from "@/components/motion/reveal";
 import { SectionLabel } from "@/components/section-label";
 import { DRIVE } from "@/lib/content";
 
-const RING = "Applications open · Join IEEE SRMIST · Recruitments · ";
+const RING = "Waitlist open · Join IEEE SRMIST · Recruitments · ";
 
 export function ClosingSection() {
   return (
@@ -40,11 +40,11 @@ export function ClosingSection() {
       </div>
       <Reveal y={40}>
         <Link
-          href="/apply"
+          href="/waitlist"
           className="group font-display mt-6 flex items-end justify-between gap-4 text-[clamp(5rem,22vw,24rem)] leading-[0.8] uppercase"
         >
           <span className="transition-transform duration-700 group-hover:translate-x-4">
-            Apply now
+            Waitlist
           </span>
           <ArrowUpRight className="mb-[0.08em] size-[0.4em] shrink-0 transition-transform duration-700 group-hover:translate-x-2 group-hover:-translate-y-2" />
         </Link>
@@ -53,7 +53,9 @@ export function ClosingSection() {
         delay={0.15}
         className="mt-10 flex flex-wrap justify-between gap-4 border-t border-primary-foreground/20 pt-5 text-xs font-semibold tracking-wide uppercase"
       >
-        <p>Applications close {DRIVE.closes}</p>
+        <p>
+          {DRIVE.status} · {DRIVE.waitlist}
+        </p>
         <p className="text-primary-faint">Takes about five minutes</p>
       </Reveal>
     </section>

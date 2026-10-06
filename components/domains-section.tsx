@@ -30,8 +30,9 @@ export function DomainsSection() {
             as="p"
             className="text-primary-soft max-w-md text-sm leading-relaxed"
           >
-            Choose in order of preference. Every domain you pick reads your
-            application, so pick the ones you&apos;d really show up for.
+            Choose in order of preference. Every domain you pick sees your
+            details when recruitment opens, so pick the ones you&apos;d really
+            show up for.
           </Reveal>
         </div>
       </div>
@@ -85,10 +86,11 @@ export function DomainsSection() {
                     ))}
                   </ul>
                   <Link
-                    href={`/apply?domain=${encodeURIComponent(domain.code)}`}
+                    href={`/waitlist?domain=${encodeURIComponent(domain.code)}`}
                     className="inline-flex items-center gap-1 self-end text-xs font-bold tracking-wide uppercase underline-offset-4 hover:underline md:col-span-2 md:justify-self-end"
                   >
-                    Apply for {domain.code} <ArrowUpRight className="size-4" />
+                    Waitlist for {domain.code}{" "}
+                    <ArrowUpRight className="size-4" />
                   </Link>
                 </AccordionContent>
               </AccordionItem>

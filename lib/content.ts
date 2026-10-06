@@ -1,7 +1,6 @@
 export const DRIVE = {
-  opens: "1 Nov",
-  closes: "15 Nov 2026",
-  status: "Applications open",
+  status: "Recruitment closed",
+  waitlist: "Waitlist open",
 };
 
 export type Domain = {
@@ -76,7 +75,7 @@ export const DOMAINS: Domain[] = [
     ],
   },
   {
-    code: "W&AD",
+    code: "WAD",
     word: "Web & apps",
     name: "Web and App Development",
     blurb:
@@ -140,30 +139,36 @@ export const DOMAINS: Domain[] = [
 
 export const STEPS = [
   {
-    title: "Apply",
-    date: "1–15 Nov",
-    description: "Fill in the form and pick up to three domains, in order.",
+    title: "Waitlist",
+    date: "Now",
+    description: "Leave your details and pick up to three domains, in order.",
   },
   {
-    title: "Shortlist",
-    date: "18 Nov",
-    description: "Each domain reads every application and shortlists.",
+    title: "Recruitment opens",
+    date: "Next drive",
+    description:
+      "Everyone on the waitlist hears first, and each domain shortlists.",
   },
   {
     title: "Interview",
-    date: "20–24 Nov",
+    date: "After the shortlist",
     description: "A short, friendly chat with the domain leads.",
   },
   {
     title: "Results",
-    date: "28 Nov",
+    date: "End of the drive",
     description: "Results go out, and onboarding starts the week after.",
   },
 ];
 
 export const FAQS = [
   {
-    question: "Who can apply?",
+    question: "Is recruitment open?",
+    answer:
+      "Not right now. Recruitment is closed, but the waitlist is open: join it and you'll hear first when the next drive opens.",
+  },
+  {
+    question: "Who can join?",
     answer: "Any SRMIST student, from any year, degree or department.",
   },
   {
@@ -174,11 +179,11 @@ export const FAQS = [
   {
     question: "How many domains can I pick?",
     answer:
-      "Up to three, in order of preference. Each one you pick reads your application.",
+      "Up to three, in order of preference. Each one you pick sees your details when recruitment opens.",
   },
   {
     question: "Is there a fee?",
-    answer: "No. Applying and joining a domain is free.",
+    answer: "No. The waitlist, applying and joining a domain are all free.",
   },
   {
     question: "What happens in the interview?",
@@ -210,5 +215,5 @@ export const SITE_LINKS = [
   { label: "Domains", href: "/#domains" },
   { label: "How it works", href: "/#how-it-works" },
   { label: "FAQ", href: "/#faq" },
-  { label: "Apply", href: "/apply" },
+  { label: "Waitlist", href: "/waitlist" },
 ];

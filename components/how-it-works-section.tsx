@@ -29,7 +29,7 @@ export function HowItWorksSection() {
         </SectionLabel>
         <TwoTone
           tone="blue"
-          text="Four *simple* steps from your *application* to your first domain *meeting.*"
+          text="Four *simple* steps from the *waitlist* to your first domain *meeting.*"
           className="text-[clamp(1.9rem,4.4vw,4.25rem)] leading-[0.95] md:col-span-9"
         />
       </div>

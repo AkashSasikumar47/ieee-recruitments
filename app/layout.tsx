@@ -17,7 +17,7 @@ const bebasNeue = Bebas_Neue({
 export const metadata: Metadata = {
   title: "Recruitments | IEEE SRMIST",
   description:
-    "Join IEEE SRMIST. Ten domains, one application: pick up to three and find your place in the student branch.",
+    "Recruitment at IEEE SRMIST is closed for now, but the waitlist is open. Ten domains: pick up to three and find your place in the student branch.",
 };
 
 export const viewport: Viewport = {

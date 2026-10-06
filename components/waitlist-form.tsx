@@ -70,7 +70,7 @@ function sampleCode() {
   return `REC-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
 }
 
-export function ApplyForm({ preselect }: { preselect?: string }) {
+export function WaitlistForm({ preselect }: { preselect?: string }) {
   const form = useRef<HTMLFormElement>(null);
   const [stage, setStage] = useState(0);
   const [direction, setDirection] = useState(1);
@@ -173,14 +173,14 @@ export function ApplyForm({ preselect }: { preselect?: string }) {
       <aside className="flex flex-col gap-8 md:sticky md:top-28 md:col-span-4 md:self-start">
         <Reveal trigger="mount" y={8}>
           <p className="text-primary-soft text-xs font-semibold tracking-wide uppercase">
-            ↳ Application · Recruitments
+            ↳ Waitlist · Recruitments
           </p>
         </Reveal>
         <TwoTone
           as="h1"
           trigger="mount"
           delay={0.1}
-          text="Apply to *IEEE* SRMIST"
+          text="Join the *waitlist*"
           className="text-[clamp(2.5rem,5vw,4.5rem)] leading-[0.92]"
         />
         <ol className="grid grid-cols-4 gap-2 md:flex md:flex-col md:gap-0 md:border-t">
@@ -211,8 +211,8 @@ export function ApplyForm({ preselect }: { preselect?: string }) {
           })}
         </ol>
         <p className="text-primary-soft hidden max-w-xs text-xs leading-relaxed md:block">
-          Preview only: applications aren&apos;t being collected yet, so nothing
-          you enter here is sent anywhere.
+          Recruitment is closed for now. Preview only: the waitlist isn&apos;t
+          collecting entries yet, so nothing you enter here is sent anywhere.
         </p>
       </aside>
 
@@ -497,12 +497,12 @@ export function ApplyForm({ preselect }: { preselect?: string }) {
             size="lg"
             className="h-12 flex-1 font-bold uppercase"
           >
-            {stage === STAGES.length - 1 ? "Submit application" : "Next"}
+            {stage === STAGES.length - 1 ? "Join the waitlist" : "Next"}
             <ArrowRight />
           </Button>
         </div>
         <p className="text-primary-soft text-xs leading-relaxed md:hidden">
-          Preview only: applications aren&apos;t being collected yet.
+          Preview only: the waitlist isn&apos;t collecting entries yet.
         </p>
       </form>
     </div>
@@ -513,7 +513,7 @@ const STAGE_TITLES = [
   "About you",
   "Your academics",
   "Your domains",
-  "Check and submit",
+  "Check and join",
 ];
 
 function Confirmation({
@@ -531,7 +531,7 @@ function Confirmation({
         <div className="flex flex-col gap-8 md:col-span-7">
           <Reveal trigger="mount" y={8}>
             <p className="text-primary-faint text-xs font-semibold tracking-wide uppercase">
-              ↳ Application received
+              ↳ On the waitlist
             </p>
           </Reveal>
           <motion.h1
@@ -540,17 +540,18 @@ function Confirmation({
             transition={{ duration: DURATION.text, ease: EASE_OUT }}
             className="font-display text-[clamp(4.5rem,13vw,13rem)] leading-[0.82] uppercase"
           >
-            You&apos;re in
+            You&apos;re on
             <br />
-            <span className="text-primary-faint">the running</span>
+            <span className="text-primary-faint">the list</span>
           </motion.h1>
           <Reveal
             trigger="mount"
             delay={0.3}
             className="text-primary-faint max-w-md"
           >
-            Thanks, {name.split(" ")[0] || "there"}. Keep your application code
-            handy. Results for {domains.join(", ")} go out after the interviews.
+            Thanks, {name.split(" ")[0] || "there"}. Keep your waitlist code
+            handy. You&apos;ll hear first when recruitment for{" "}
+            {domains.join(", ")} opens.
           </Reveal>
         </div>
         <Reveal
@@ -562,7 +563,7 @@ function Confirmation({
             <div className="flex flex-col gap-6 bg-primary-foreground/10 p-6">
               <div className="flex flex-col gap-1">
                 <span className="text-primary-faint text-xs font-semibold uppercase">
-                  Application code
+                  Waitlist code
                 </span>
                 <span className="font-display text-5xl leading-none">
                   {code}

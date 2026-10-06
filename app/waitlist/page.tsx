@@ -1,20 +1,22 @@
 import type { Metadata } from "next";
-import { ApplyForm } from "@/components/apply-form";
+import { WaitlistForm } from "@/components/waitlist-form";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 
 export const metadata: Metadata = {
-  title: "Apply | Recruitments | IEEE SRMIST",
+  title: "Waitlist | Recruitments | IEEE SRMIST",
 };
 
-export default async function ApplyPage({ searchParams }: PageProps<"/apply">) {
+export default async function WaitlistPage({
+  searchParams,
+}: PageProps<"/waitlist">) {
   const { domain } = await searchParams;
 
   return (
     <>
       <SiteHeader />
       <main className="flex-1">
-        <ApplyForm
+        <WaitlistForm
           preselect={typeof domain === "string" ? domain : undefined}
         />
       </main>
