@@ -24,7 +24,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative isolate flex h-svh min-h-[36rem] flex-col justify-end overflow-hidden bg-primary px-site-4 pt-24 pb-[max(7rem,calc(env(safe-area-inset-bottom)+5.5rem))] text-primary-foreground md:px-site-8 md:pb-8">
+    <section className="relative isolate flex h-svh min-h-[36rem] flex-col justify-end overflow-hidden bg-primary px-gutter pt-24 pb-[max(7rem,calc(env(safe-area-inset-bottom)+5.5rem))] text-primary-foreground md:pb-8">
       <HeroArt active={index} />
       <TwoTone
         as="h1"

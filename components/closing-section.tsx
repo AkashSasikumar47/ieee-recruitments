@@ -12,7 +12,7 @@ const RING = "Applications open · Join IEEE SRMIST · Recruitments · ";
 
 export function ClosingSection() {
   return (
-    <section className="relative overflow-hidden bg-primary px-site-4 py-20 text-primary-foreground md:px-site-8 md:py-28">
+    <section className="relative overflow-hidden bg-primary px-gutter py-20 text-primary-foreground md:py-28">
       <div className="flex items-start justify-between gap-6">
         <SectionLabel tone="blue">Ready?</SectionLabel>
         <motion.svg

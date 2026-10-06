@@ -7,7 +7,7 @@ import { SITE_LINKS } from "@/lib/content";
 
 export function SiteFooter() {
   return (
-    <footer className="mt-auto px-site-4 pt-16 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:px-site-8 md:pt-24">
+    <footer className="mt-auto px-gutter pt-16 pb-[max(1.25rem,env(safe-area-inset-bottom))] md:pt-24">
       <nav className="grid grid-cols-2 gap-x-6 gap-y-10 text-xs font-semibold uppercase md:grid-cols-12">
         {footerLinks({ title: "Recruitments", links: SITE_LINKS }).map(
           (group, index) => (

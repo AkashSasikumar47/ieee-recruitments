@@ -21,7 +21,7 @@ export function HowItWorksSection() {
   return (
     <section
       id="how-it-works"
-      className="bg-primary px-site-4 pt-20 pb-4 text-primary-foreground md:px-site-8 md:pt-32 md:pb-8"
+      className="bg-primary px-gutter pt-20 pb-4 text-primary-foreground md:pt-32 md:pb-8"
     >
       <div className="grid gap-8 md:grid-cols-12">
         <SectionLabel tone="blue" className="md:col-span-3">

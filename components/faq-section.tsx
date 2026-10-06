@@ -11,7 +11,7 @@ import { FAQS } from "@/lib/content";
 
 export function FaqSection() {
   return (
-    <section id="faq" className="px-site-4 py-20 md:px-site-8 md:py-32">
+    <section id="faq" className="px-gutter py-20 md:py-32">
       <div className="grid gap-8 md:grid-cols-12">
         <SectionLabel className="md:col-span-3">FAQ</SectionLabel>
         <div className="flex flex-col gap-12 md:col-span-9">

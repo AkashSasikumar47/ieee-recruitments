@@ -18,7 +18,7 @@ export function DomainsSection() {
   const [open, setOpen] = useState("");
 
   return (
-    <section id="domains" className="px-site-4 py-20 md:px-site-8 md:py-32">
+    <section id="domains" className="px-gutter py-20 md:py-32">
       <div className="grid gap-8 md:grid-cols-12">
         <SectionLabel className="md:col-span-3">Domains</SectionLabel>
         <div className="flex flex-col gap-6 md:col-span-9">
