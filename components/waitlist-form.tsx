@@ -8,9 +8,12 @@ import { Button } from "@ieee/ui/components/button";
 import { Input } from "@ieee/ui/components/input";
 import { Label } from "@ieee/ui/components/label";
 import {
-  NativeSelect,
-  NativeSelectOption,
-} from "@ieee/ui/components/native-select";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@ieee/ui/components/select";
 import { Textarea } from "@ieee/ui/components/textarea";
 import { Brackets } from "@/components/brackets";
 import { DURATION, EASE_OUT } from "@/components/motion/timing";
@@ -54,9 +57,7 @@ function Field({
   children: React.ReactNode;
 }) {
   return (
-    <div
-      className={`flex flex-col gap-2 *:data-[slot=native-select-wrapper]:w-full ${className}`}
-    >
+    <div className={`flex flex-col gap-2 ${className}`}>
       <Label htmlFor={id} className={LABEL}>
         {label}
         {hint && <span className="text-primary-soft font-normal">{hint}</span>}
@@ -75,6 +76,7 @@ export function WaitlistForm({ preselect }: { preselect?: string }) {
   const [stage, setStage] = useState(0);
   const [direction, setDirection] = useState(1);
   const [values, setValues] = useState<Values>(EMPTY);
+  const [pickError, setPickError] = useState<"degree" | "year" | null>(null);
   const [domains, setDomains] = useState<string[]>(
     DOMAINS.some((domain) => domain.code === preselect) && preselect
       ? [preselect]
@@ -103,6 +105,13 @@ export function WaitlistForm({ preselect }: { preselect?: string }) {
   }
 
   function forward() {
+    if (stage === 1) {
+      const missing = (["degree", "year"] as const).find((key) => !values[key]);
+      if (missing) {
+        setPickError(missing);
+        return;
+      }
+    }
     const inputs = form.current?.querySelectorAll<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >("input, select, textarea");
@@ -298,36 +307,62 @@ export function WaitlistForm({ preselect }: { preselect?: string }) {
             {stage === 1 && (
               <div className="grid gap-5 sm:grid-cols-2">
                 <Field id="degree" label="Degree">
-                  <NativeSelect
-                    id="degree"
+                  <Select
                     required
-                    value={values.degree}
-                    onChange={set("degree")}
-                    className="h-12"
+                    value={values.degree || undefined}
+                    onValueChange={(value) => {
+                      setPickError(null);
+                      setValues((current) => ({ ...current, degree: value }));
+                    }}
                   >
-                    <NativeSelectOption value="">Select</NativeSelectOption>
-                    {DEGREES.map((degree) => (
-                      <NativeSelectOption key={degree} value={degree}>
-                        {degree}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
+                    <SelectTrigger id="degree" className="h-12 w-full">
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      {DEGREES.map((item) => (
+                        <SelectItem key={item} value={item}>
+                          {item}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {pickError === "degree" && (
+                    <p
+                      role="alert"
+                      className="text-sm font-semibold text-destructive"
+                    >
+                      Choose your degree.
+                    </p>
+                  )}
                 </Field>
                 <Field id="year" label="Year of study">
-                  <NativeSelect
-                    id="year"
+                  <Select
                     required
-                    value={values.year}
-                    onChange={set("year")}
-                    className="h-12"
+                    value={values.year || undefined}
+                    onValueChange={(value) => {
+                      setPickError(null);
+                      setValues((current) => ({ ...current, year: value }));
+                    }}
                   >
-                    <NativeSelectOption value="">Select</NativeSelectOption>
-                    {YEARS.map((year) => (
-                      <NativeSelectOption key={year} value={year}>
-                        {year}
-                      </NativeSelectOption>
-                    ))}
-                  </NativeSelect>
+                    <SelectTrigger id="year" className="h-12 w-full">
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent position="popper">
+                      {YEARS.map((item) => (
+                        <SelectItem key={item} value={item}>
+                          {item}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  {pickError === "year" && (
+                    <p
+                      role="alert"
+                      className="text-sm font-semibold text-destructive"
+                    >
+                      Choose your year of study.
+                    </p>
+                  )}
                 </Field>
                 <Field
                   id="department"
@@ -453,8 +488,9 @@ export function WaitlistForm({ preselect }: { preselect?: string }) {
                       </h3>
                       <Button
                         type="button"
-                        variant="link"
-                        className="h-auto p-0 text-xs font-bold uppercase"
+                        variant="outline"
+                        size="sm"
+                        className="text-xs font-bold uppercase"
                         onClick={() => go(group.stage)}
                       >
                         Edit
