@@ -15,9 +15,10 @@ import {
 } from "@/components/motion/timing";
 import { YouAreHere } from "@/components/motion/you-are-here";
 import { TwoTone } from "@/components/two-tone";
-import { DOMAINS, DRIVE } from "@/lib/content";
+import { DOMAINS, driveCopy } from "@/lib/content";
 
-export function HeroSection() {
+export function HeroSection({ drive }: { drive: string | null }) {
+  const copy = driveCopy(drive);
   const [index, setIndex] = useState(0);
   const domain = DOMAINS[index] ?? DOMAINS[0]!;
 
@@ -84,7 +85,7 @@ export function HeroSection() {
         <p className="text-xs font-semibold tracking-wide uppercase">
           <span className="text-primary-faint">IEEE SRMIST · Recruitments</span>
           <br />
-          {DRIVE.status} · {DRIVE.waitlist}
+          {copy.status}
         </p>
         <Button
           size="lg"
@@ -93,7 +94,7 @@ export function HeroSection() {
           asChild
         >
           <Link href="/waitlist">
-            Join the waitlist <ArrowRight />
+            {copy.action} <ArrowRight />
           </Link>
         </Button>
       </Reveal>

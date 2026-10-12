@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@ieee/ui"],
+  transpilePackages: ["@ieee/ui", "@ieee/supabase"],
   images: {
     formats: ["image/avif", "image/webp"],
     qualities: [75, 100],

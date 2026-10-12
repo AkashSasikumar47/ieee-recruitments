@@ -1,7 +1,24 @@
-export const DRIVE = {
-  status: "Recruitment closed",
-  waitlist: "Waitlist open",
-};
+export function driveCopy(drive: string | null) {
+  return drive
+    ? {
+        status: `${drive} · Applications open`,
+        action: "Apply now",
+        word: "Apply",
+        ring: "Applications open · Join IEEE SRMIST · Recruitments · ",
+        label: "Application",
+        title: "*Apply* now",
+        submit: "Send application",
+      }
+    : {
+        status: "Recruitment closed · Waitlist open",
+        action: "Join the waitlist",
+        word: "Waitlist",
+        ring: "Waitlist open · Join IEEE SRMIST · Recruitments · ",
+        label: "Waitlist",
+        title: "Join the *waitlist*",
+        submit: "Join the waitlist",
+      };
+}
 
 export type Domain = {
   code: string;

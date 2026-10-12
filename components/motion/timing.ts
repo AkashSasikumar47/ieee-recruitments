@@ -43,7 +43,7 @@ export const ART = {
   draw: 1.6,
   stagger: 0.08,
   drift: 14,
-  hop: 1.1,
+  hop: 0.5,
   ping: 2.6,
   label: 0.4,
 };

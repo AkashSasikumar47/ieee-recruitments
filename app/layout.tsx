@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Bebas_Neue, Inter_Tight } from "next/font/google";
+import { Toaster } from "@ieee/ui/components/sonner";
 import { MotionProvider } from "@/components/motion/motion-provider";
 import "./globals.css";
 
@@ -17,7 +18,7 @@ const bebasNeue = Bebas_Neue({
 export const metadata: Metadata = {
   title: "Recruitments | IEEE SRMIST",
   description:
-    "Recruitment at IEEE SRMIST is closed for now, but the waitlist is open. Ten domains: pick up to three and find your place in the student branch.",
+    "Join IEEE SRMIST. Ten domains: pick up to three and find your place in the student branch.",
 };
 
 export const viewport: Viewport = {
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="flex min-h-dvh flex-col bg-background text-foreground antialiased">
         <MotionProvider>{children}</MotionProvider>
+        <Toaster theme="light" position="bottom-center" />
       </body>
     </html>
   );

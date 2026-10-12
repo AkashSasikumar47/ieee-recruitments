@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ART, EASE_IN_OUT, EASE_OUT, YOU } from "@/components/motion/timing";
 import { DOMAINS } from "@/lib/content";
@@ -33,10 +34,49 @@ const EDGES = [
   [7, 9],
   [8, 7],
   [1, 5],
+  [8, 9],
 ] as const;
 
+function route(from: number, to: number) {
+  const previous = new Map<number, number>([[from, from]]);
+  const queue = [from];
+  while (queue.length && !previous.has(to)) {
+    const node = queue.shift()!;
+    for (const [a, b] of EDGES) {
+      const next = a === node ? b : b === node ? a : null;
+      if (next !== null && !previous.has(next)) {
+        previous.set(next, node);
+        queue.push(next);
+      }
+    }
+  }
+  const path = [to];
+  while (path[0] !== from && previous.has(path[0]!)) {
+    path.unshift(previous.get(path[0]!)!);
+  }
+  return path.map((index) => NODES[index]!);
+}
+
 export function HeroArt({ active }: { active: number }) {
-  const point = NODES[active % NODES.length]!;
+  const target = active % NODES.length;
+  const [hop, setHop] = useState({ from: target, to: target });
+  if (hop.to !== target) setHop({ from: hop.to, to: target });
+  const path = route(hop.from, target);
+  const point = NODES[target]!;
+  const lengths = path
+    .slice(1)
+    .map((node, index) =>
+      Math.hypot(node[0] - path[index]![0], node[1] - path[index]![1]),
+    );
+  const total = lengths.reduce((sum, length) => sum + length, 0) || 1;
+  let walked = 0;
+  const times = [
+    0,
+    ...lengths.map((length) => {
+      walked += length;
+      return walked / total;
+    }),
+  ];
   const code = DOMAINS[active]?.code ?? "";
 
   return (
@@ -88,9 +128,26 @@ export function HeroArt({ active }: { active: number }) {
       </g>
       <motion.g
         initial={{ x: point[0], y: point[1], opacity: 0 }}
-        animate={{ x: point[0], y: point[1], opacity: 1 }}
+        animate={{
+          x: path.map((node) => node[0]),
+          y: path.map((node) => node[1]),
+          opacity: 1,
+        }}
         transition={{
-          default: { duration: ART.hop, ease: EASE_IN_OUT },
+          default: {
+            duration: ART.hop * Math.max(1, path.length - 1) ** 0.5,
+            ease:
+              lengths.length > 1
+                ? lengths.map((_, index) =>
+                    index === 0
+                      ? "easeIn"
+                      : index === lengths.length - 1
+                        ? "easeOut"
+                        : "linear",
+                  )
+                : EASE_IN_OUT,
+            times,
+          },
           opacity: { duration: 0.2, delay: YOU.done - 0.1 },
         }}
       >

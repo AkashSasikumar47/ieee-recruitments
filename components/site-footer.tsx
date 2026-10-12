@@ -42,9 +42,12 @@ export function SiteFooter() {
       <div aria-hidden="true" className="@container mt-16 md:mt-24">
         <Wordmark className="-ml-[0.04em] block text-[length:calc(100cqw/4.4)]" />
       </div>
-      <p className="mt-6 border-t pt-5 text-xs font-semibold uppercase">
-        {copyrightLine()}
-      </p>
+      <div className="mt-6 flex items-center justify-between gap-4 border-t pt-5 text-xs font-semibold uppercase">
+        <p>{copyrightLine()}</p>
+        <Link href="/admin" prefetch={false} className="hover:opacity-60">
+          Admin
+        </Link>
+      </div>
     </footer>
   );
 }

@@ -1,9 +1,11 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useLenis } from "lenis/react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import { Alert, AlertDescription } from "@ieee/ui/components/alert";
 import { Button } from "@ieee/ui/components/button";
 import { Input } from "@ieee/ui/components/input";
 import { Label } from "@ieee/ui/components/label";
@@ -19,7 +21,7 @@ import { Brackets } from "@/components/brackets";
 import { DURATION, EASE_OUT } from "@/components/motion/timing";
 import { Reveal } from "@/components/motion/reveal";
 import { TwoTone } from "@/components/two-tone";
-import { DEGREES, DOMAINS, STEPS, YEARS } from "@/lib/content";
+import { DEGREES, DOMAINS, driveCopy, STEPS, YEARS } from "@/lib/content";
 
 const STAGES = ["You", "Academics", "Domains", "Review"] as const;
 
@@ -67,12 +69,16 @@ function Field({
   );
 }
 
-function sampleCode() {
-  return `REC-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
-}
-
-export function WaitlistForm({ preselect }: { preselect?: string }) {
+export function WaitlistForm({
+  drive,
+  preselect,
+}: {
+  drive: string | null;
+  preselect?: string;
+}) {
+  const copy = driveCopy(drive);
   const form = useRef<HTMLFormElement>(null);
+  const lenis = useLenis();
   const [stage, setStage] = useState(0);
   const [direction, setDirection] = useState(1);
   const [values, setValues] = useState<Values>(EMPTY);
@@ -84,6 +90,8 @@ export function WaitlistForm({ preselect }: { preselect?: string }) {
   );
   const [domainError, setDomainError] = useState(false);
   const [code, setCode] = useState<string | null>(null);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
   function set(key: keyof Values, upper = false) {
     return (
@@ -98,10 +106,15 @@ export function WaitlistForm({ preselect }: { preselect?: string }) {
     };
   }
 
+  function toTop() {
+    if (lenis) lenis.scrollTo(0);
+    else window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   function go(next: number) {
     setDirection(next > stage ? 1 : -1);
     setStage(next);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    toTop();
   }
 
   function forward() {
@@ -123,11 +136,34 @@ export function WaitlistForm({ preselect }: { preselect?: string }) {
       return;
     }
     if (stage === STAGES.length - 1) {
-      setCode(sampleCode());
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      void submit();
       return;
     }
     go(stage + 1);
+  }
+
+  async function submit() {
+    if (sending) return;
+    setSending(true);
+    setError("");
+    const response = await fetch("/api/apply", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ...values, domains }),
+    }).catch(() => null);
+    const body = (await response?.json().catch(() => null)) as {
+      code?: string;
+      error?: string;
+    } | null;
+    setSending(false);
+    if (!response?.ok || !body?.code) {
+      setError(
+        body?.error ?? "Couldn't reach the server. Check your connection.",
+      );
+      return;
+    }
+    setCode(body.code);
+    toTop();
   }
 
   function toggle(codeName: string) {
@@ -142,7 +178,14 @@ export function WaitlistForm({ preselect }: { preselect?: string }) {
   }
 
   if (code)
-    return <Confirmation code={code} name={values.name} domains={domains} />;
+    return (
+      <Confirmation
+        code={code}
+        name={values.name}
+        domains={domains}
+        applied={drive !== null}
+      />
+    );
 
   const review = [
     {
@@ -182,14 +225,14 @@ export function WaitlistForm({ preselect }: { preselect?: string }) {
       <aside className="flex flex-col gap-8 md:sticky md:top-28 md:col-span-4 md:self-start">
         <Reveal trigger="mount" y={8}>
           <p className="text-primary-soft text-xs font-semibold tracking-wide uppercase">
-            ↳ Waitlist · Recruitments
+            ↳ {copy.label} · Recruitments
           </p>
         </Reveal>
         <TwoTone
           as="h1"
           trigger="mount"
           delay={0.1}
-          text="Join the *waitlist*"
+          text={copy.title}
           className="text-[clamp(2.5rem,5vw,4.5rem)] leading-[0.92]"
         />
         <ol className="grid grid-cols-4 gap-2 md:flex md:flex-col md:gap-0 md:border-t">
@@ -220,8 +263,9 @@ export function WaitlistForm({ preselect }: { preselect?: string }) {
           })}
         </ol>
         <p className="text-primary-soft hidden max-w-xs text-xs leading-relaxed md:block">
-          Recruitment is closed for now. Preview only: the waitlist isn&apos;t
-          collecting entries yet, so nothing you enter here is sent anywhere.
+          {drive
+            ? "After you apply, every next step happens in the candidates' WhatsApp group."
+            : "Recruitment is closed for now. Join the waitlist and you'll hear first when it opens."}
         </p>
       </aside>
 
@@ -531,15 +575,22 @@ export function WaitlistForm({ preselect }: { preselect?: string }) {
           <Button
             type="submit"
             size="lg"
+            disabled={sending}
             className="h-12 flex-1 font-bold uppercase"
           >
-            {stage === STAGES.length - 1 ? "Join the waitlist" : "Next"}
+            {stage === STAGES.length - 1
+              ? sending
+                ? "Sending…"
+                : copy.submit
+              : "Next"}
             <ArrowRight />
           </Button>
         </div>
-        <p className="text-primary-soft text-xs leading-relaxed md:hidden">
-          Preview only: the waitlist isn&apos;t collecting entries yet.
-        </p>
+        {error && (
+          <Alert variant="destructive">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
       </form>
     </div>
   );
@@ -556,10 +607,12 @@ function Confirmation({
   code,
   name,
   domains,
+  applied,
 }: {
   code: string;
   name: string;
   domains: string[];
+  applied: boolean;
 }) {
   return (
     <section className="bg-primary px-gutter pt-14 pb-20 text-primary-foreground md:pt-20 md:pb-28">
@@ -567,7 +620,7 @@ function Confirmation({
         <div className="flex flex-col gap-8 md:col-span-7">
           <Reveal trigger="mount" y={8}>
             <p className="text-primary-faint text-xs font-semibold tracking-wide uppercase">
-              ↳ On the waitlist
+              ↳ {applied ? "Application sent" : "On the waitlist"}
             </p>
           </Reveal>
           <motion.h1
@@ -585,9 +638,10 @@ function Confirmation({
             delay={0.3}
             className="text-primary-faint max-w-md"
           >
-            Thanks, {name.split(" ")[0] || "there"}. Keep your waitlist code
-            handy. You&apos;ll hear first when recruitment for{" "}
-            {domains.join(", ")} opens.
+            Thanks, {name.split(" ")[0] || "there"}. Keep your code handy.{" "}
+            {applied
+              ? `We'll add you to the candidates' WhatsApp group, where every next step for ${domains.join(", ")} happens.`
+              : `You'll hear first when recruitment for ${domains.join(", ")} opens.`}
           </Reveal>
         </div>
         <Reveal
@@ -599,7 +653,7 @@ function Confirmation({
             <div className="flex flex-col gap-6 bg-primary-foreground/10 p-6">
               <div className="flex flex-col gap-1">
                 <span className="text-primary-faint text-xs font-semibold uppercase">
-                  Waitlist code
+                  {applied ? "Application code" : "Waitlist code"}
                 </span>
                 <span className="font-display text-5xl leading-none">
                   {code}
@@ -615,7 +669,7 @@ function Confirmation({
                       0{index + 1}. {step.title}
                     </span>
                     <span className="text-primary-faint">
-                      {index === 0 ? "Done" : step.date}
+                      {index <= (applied ? 1 : 0) ? "Done" : step.date}
                     </span>
                   </li>
                 ))}
