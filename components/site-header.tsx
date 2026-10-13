@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import { IeeeLogo } from "@ieee/ui/layout/ieee-logo";
 import Link from "next/link";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { DURATION, EASE_OUT, HERO, YOU } from "@/components/motion/timing";
@@ -40,14 +40,7 @@ export function SiteHeader({ overlay = false }: { overlay?: boolean }) {
           rel="noopener noreferrer"
           aria-label="IEEE SRMIST"
         >
-          <Image
-            src="/logos/ieee-srmist-logo.png"
-            alt="IEEE SRMIST"
-            width={34}
-            height={34}
-            preload
-            className={`transition-[filter] duration-500 ${overHero ? "drop-shadow-[0_0_1.5px_var(--primary-foreground)]" : ""}`}
-          />
+          <IeeeLogo tone={overHero ? "light" : "dark"} preload />
         </a>
       </div>
     </motion.header>

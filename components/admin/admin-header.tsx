@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { IeeeLogo } from "@ieee/ui/layout/ieee-logo";
 import Link from "next/link";
 import { LogOut } from "lucide-react";
 import { Button } from "@ieee/ui/components/button";
@@ -38,13 +38,7 @@ export function AdminHeader({ signedIn = true }: { signedIn?: boolean }) {
             </form>
           </>
         )}
-        <Image
-          src="/logos/ieee-srmist-logo.png"
-          alt="IEEE SRMIST"
-          width={32}
-          height={32}
-          preload
-        />
+        <IeeeLogo tone="dark" preload />
       </div>
     </header>
   );
